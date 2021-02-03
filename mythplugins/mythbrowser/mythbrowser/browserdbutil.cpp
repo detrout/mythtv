@@ -116,7 +116,7 @@ bool UpgradeBrowserDatabaseSchema(void)
     {
         const QString updates[] =
         {
-            "ALTER TABLE `websites` ADD `homepage` BOOL NOT NULL;",
+            "ALTER TABLE \"websites\" ADD \"homepage\" BOOL NOT NULL;",
             ""
         };
         if (!performActualUpdate(updates, "1003", dbver))
@@ -145,7 +145,7 @@ bool FindInDB(const QString &category, const QString& name)
 bool ResetHomepageFromDB()
 {
     MSqlQuery query(MSqlQuery::InitCon());
-    query.prepare("UPDATE `websites` SET `homepage` = '0' WHERE `homepage` = '1';");
+    query.prepare("UPDATE \"websites\" SET \"homepage\" = '0' WHERE \"homepage\" = '1';");
 
     return query.exec();
 }
@@ -153,9 +153,9 @@ bool ResetHomepageFromDB()
 bool UpdateHomepageInDB(Bookmark* site)
 {
     MSqlQuery query(MSqlQuery::InitCon());
-    query.prepare("UPDATE `websites` SET `homepage` = '1' "
-                  "WHERE `category` = :CATEGORY "
-                  "AND `name` = :NAME;");
+    query.prepare("UPDATE \"websites\" SET \"homepage\" = '1' "
+                  "WHERE \"category\" = :CATEGORY "
+                  "AND \"name\" = :NAME;");
     query.bindValue(":CATEGORY", site->m_category);
     query.bindValue(":NAME", site->m_name);
 

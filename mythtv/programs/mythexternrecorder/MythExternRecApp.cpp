@@ -574,17 +574,17 @@ Q_SLOT void MythExternRecApp::TuneChannel(const QString & serial,
         m_tuneProc.start(tunecmd);
         if (!m_tuneProc.waitForStarted())
         {
-            QString errmsg = QString("Tune `%1` failed: ").arg(tunecmd) + ENO;
+            QString errmsg = QString("Tune \"%1\" failed: ").arg(tunecmd) + ENO;
             LOG(VB_CHANNEL, LOG_ERR, LOC + ": " + errmsg);
             emit SendMessage("TuneChannel", serial,
                              QString("ERR:%1").arg(errmsg));
             return;
         }
 
-        LOG(VB_CHANNEL, LOG_INFO, LOC + QString(": Started `%1` URL '%2'")
+        LOG(VB_CHANNEL, LOG_INFO, LOC + QString(": Started \"%1\" URL '%2'")
             .arg(tunecmd).arg(url));
         emit SendMessage("TuneChannel", serial,
-                         QString("OK:InProgress `%1`").arg(tunecmd));
+                         QString("OK:InProgress \"%1\"").arg(tunecmd));
     }
     else
     {

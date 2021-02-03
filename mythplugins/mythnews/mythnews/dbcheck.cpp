@@ -95,7 +95,7 @@ bool UpgradeNewsDatabaseSchema(void)
     {
         const QString updates[] =
         {
-            "ALTER TABLE `newssites` ADD `podcast` BOOL NOT NULL DEFAULT '0';",
+            "ALTER TABLE \"newssites\" ADD \"podcast\" BOOL NOT NULL DEFAULT '0';",
             ""
         };
 

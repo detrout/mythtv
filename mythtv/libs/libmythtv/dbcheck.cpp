@@ -1265,7 +1265,7 @@ nullptr
         const char *updates[] = {
 "ALTER TABLE dtv_multiplex MODIFY COLUMN updatetimestamp "
 "  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;",
-"ALTER TABLE dvdbookmark MODIFY COLUMN `timestamp` "
+"ALTER TABLE dvdbookmark MODIFY COLUMN \"timestamp\" "
 "  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;",
 "ALTER TABLE jobqueue MODIFY COLUMN statustime "
 "  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;",
@@ -1381,7 +1381,7 @@ nullptr
         const char *updates[] = {
 "ALTER TABLE internetcontent MODIFY COLUMN updated "
 "  DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';",
-"ALTER TABLE internetcontentarticles MODIFY COLUMN `date` "
+"ALTER TABLE internetcontentarticles MODIFY COLUMN \"date\" "
 "  DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';",
 nullptr
 };
@@ -1426,20 +1426,20 @@ nullptr
     if (dbver == "1275")
     {
         const char *updates[] = {
-"DROP TABLE IF EXISTS `logging`;",
-"CREATE TABLE `logging` ( "
-"  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT, "
-"  `host` varchar(64) NOT NULL, "
-"  `application` varchar(64) NOT NULL, "
-"  `pid` int(11) NOT NULL, "
-"  `thread` varchar(64) NOT NULL, "
-"  `msgtime` datetime NOT NULL, "
-"  `level` int(11) NOT NULL, "
-"  `message` varchar(2048) NOT NULL, "
-"  PRIMARY KEY (`id`), "
-"  KEY `host` (`host`,`application`,`pid`,`msgtime`), "
-"  KEY `msgtime` (`msgtime`), "
-"  KEY `level` (`level`) "
+"DROP TABLE IF EXISTS \"logging\";",
+"CREATE TABLE \"logging\" ( "
+"  \"id\" bigint(20) unsigned NOT NULL AUTO_INCREMENT, "
+"  \"host\" varchar(64) NOT NULL, "
+"  \"application\" varchar(64) NOT NULL, "
+"  \"pid\" int(11) NOT NULL, "
+"  \"thread\" varchar(64) NOT NULL, "
+"  \"msgtime\" datetime NOT NULL, "
+"  \"level\" int(11) NOT NULL, "
+"  \"message\" varchar(2048) NOT NULL, "
+"  PRIMARY KEY (\"id\"), "
+"  KEY \"host\" (\"host\",\"application\",\"pid\",\"msgtime\"), "
+"  KEY \"msgtime\" (\"msgtime\"), "
+"  KEY \"level\" (\"level\") "
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8; ",
 nullptr
 };
@@ -1787,7 +1787,7 @@ nullptr
 " ADD COLUMN tid INT(11) NOT NULL DEFAULT '0' AFTER pid, "
 " ADD COLUMN filename VARCHAR(255) NOT NULL DEFAULT '' AFTER thread, "
 " ADD COLUMN line INT(11) NOT NULL DEFAULT '0' AFTER filename, "
-" ADD COLUMN `function` VARCHAR(255) NOT NULL DEFAULT '' AFTER line;",
+" ADD COLUMN \"function\" VARCHAR(255) NOT NULL DEFAULT '' AFTER line;",
 nullptr
 };
 
@@ -2318,30 +2318,30 @@ nullptr
 
         const char *updates[] = {
 "CREATE TABLE scannerfile ("
-"  `fileid`         BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,"
-"  `filesize`       BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,"
-"  `filehash`       VARCHAR(64) NOT NULL DEFAULT '',"
-"  `added`          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
-"  PRIMARY KEY (`fileid`),"
-"  UNIQUE KEY filehash (`filehash`)"
+"  \"fileid\"         BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,"
+"  \"filesize\"       BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,"
+"  \"filehash\"       VARCHAR(64) NOT NULL DEFAULT '',"
+"  \"added\"          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+"  PRIMARY KEY (\"fileid\"),"
+"  UNIQUE KEY filehash (\"filehash\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE scannerpath ("
-"  `fileid`         BIGINT(20) UNSIGNED NOT NULL,"
-"  `hostname`       VARCHAR(64) NOT NULL DEFAULT 'localhost',"
-"  `storagegroup`   VARCHAR(32) NOT NULL DEFAULT 'Default',"
-"  `filename`       VARCHAR(255) NOT NULL DEFAULT '',"
-"  PRIMARY KEY (`fileid`)"
+"  \"fileid\"         BIGINT(20) UNSIGNED NOT NULL,"
+"  \"hostname\"       VARCHAR(64) NOT NULL DEFAULT 'localhost',"
+"  \"storagegroup\"   VARCHAR(32) NOT NULL DEFAULT 'Default',"
+"  \"filename\"       VARCHAR(255) NOT NULL DEFAULT '',"
+"  PRIMARY KEY (\"fileid\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE videopart ("
-"  `fileid`         BIGINT(20) UNSIGNED NOT NULL,"
-"  `videoid`        INT(10) UNSIGNED NOT NULL,"
-"  `order`          SMALLINT UNSIGNED NOT NULL DEFAULT 1,"
-"  PRIMARY KEY `part` (`videoid`, `order`)"
+"  \"fileid\"         BIGINT(20) UNSIGNED NOT NULL,"
+"  \"videoid\"        INT(10) UNSIGNED NOT NULL,"
+"  \"order\"          SMALLINT UNSIGNED NOT NULL DEFAULT 1,"
+"  PRIMARY KEY \"part\" (\"videoid\", \"order\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 nullptr
 };
 
-// removed "UNIQUE KEY path (`storagegroup`, `hostname`, `filename`)" from
+// removed "UNIQUE KEY path (\"storagegroup\", \"hostname\", \"filename\")" from
 // scannerpath as a quick fix for key length constraints
 
         if (!performActualUpdate(updates, "1307", dbver))
@@ -2416,24 +2416,24 @@ nullptr
     {
         const char *updates[] = {
 // Move old table temporarily
-"RENAME TABLE `housekeeping` TO `oldhousekeeping`;",
+"RENAME TABLE \"housekeeping\" TO \"oldhousekeeping\";",
 // Create new table in its place
-"CREATE TABLE `housekeeping` ("
-"  `tag`        VARCHAR(64) NOT NULL,"
-"  `hostname`   VARCHAR(64),"
-"  `lastrun`    DATETIME,"
-"  UNIQUE KEY `task` (`tag`, `hostname`)"
+"CREATE TABLE \"housekeeping\" ("
+"  \"tag\"        VARCHAR(64) NOT NULL,"
+"  \"hostname\"   VARCHAR(64),"
+"  \"lastrun\"    DATETIME,"
+"  UNIQUE KEY \"task\" (\"tag\", \"hostname\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 // Migrate old data over
-"INSERT INTO `housekeeping` (`tag`, `hostname`, `lastrun`)"
-"   SELECT SUBSTRING_INDEX(`tag`, '-', 1) AS `tag`,"
-"          IF(POSITION('-' IN `tag`) > 0,"
-"             SUBSTRING(`tag` FROM LENGTH(SUBSTRING_INDEX(`tag`, '-', 1)) +2),"
-"             NULL) AS `hostname`,"
-"          `lastrun`"
-"     FROM `oldhousekeeping`;",
+"INSERT INTO \"housekeeping\" (\"tag\", \"hostname\", \"lastrun\")"
+"   SELECT SUBSTRING_INDEX(\"tag\", '-', 1) AS \"tag\","
+"          IF(POSITION('-' IN \"tag\") > 0,"
+"             SUBSTRING(\"tag\" FROM LENGTH(SUBSTRING_INDEX(\"tag\", '-', 1)) +2),"
+"             NULL) AS \"hostname\","
+"          \"lastrun\""
+"     FROM \"oldhousekeeping\";",
 // Delete old data
-"DROP TABLE `oldhousekeeping`;",
+"DROP TABLE \"oldhousekeeping\";",
 nullptr
 };
 
@@ -2446,22 +2446,22 @@ nullptr
         const char *updates[] = {
 // Create a global enable/disable instead of one per-host
 // Any hosts previously running it mean all hosts do now
-"INSERT INTO `settings` (`value`, `hostname`, `data`)"
+"INSERT INTO \"settings\" (\"value\", \"hostname\", \"data\")"
 "   SELECT 'HardwareProfileEnabled',"
 "          NULL,"
 "          IF((SELECT COUNT(1)"
-"                FROM `settings`"
-"               WHERE `value` = 'HardwareProfileLastUpdated' > 0),"
+"                FROM \"settings\""
+"               WHERE \"value\" = 'HardwareProfileLastUpdated' > 0),"
 "             1, 0);",
 // Create 'lastrun' times using existing data in settings
-"INSERT INTO `housekeeping` (`tag`, `hostname`, `lastrun`)"
+"INSERT INTO \"housekeeping\" (\"tag\", \"hostname\", \"lastrun\")"
 "   SELECT 'HardwareProfiler',"
-"          `hostname`,"
-"          `data`"
-"     FROM `settings`"
-"    WHERE `value` = 'HardwareProfileLastUpdated';",
+"          \"hostname\","
+"          \"data\""
+"     FROM \"settings\""
+"    WHERE \"value\" = 'HardwareProfileLastUpdated';",
 // Clear out old settings
-"DELETE FROM `settings` WHERE `value` = 'HardwareProfileLastUpdated';",
+"DELETE FROM \"settings\" WHERE \"value\" = 'HardwareProfileLastUpdated';",
 nullptr
 };
         if (!performActualUpdate(updates, "1312", dbver))
@@ -2472,7 +2472,7 @@ nullptr
     {
         const char *updates[] = {
 // DVD bookmark updates
-"DELETE FROM `dvdbookmark` WHERE `framenum` = 0;",
+"DELETE FROM \"dvdbookmark\" WHERE \"framenum\" = 0;",
 "ALTER TABLE dvdbookmark ADD COLUMN dvdstate varchar(1024) NOT NULL DEFAULT '';",
 nullptr
 };
@@ -2659,8 +2659,8 @@ nullptr
     if (dbver == "1321")
     {
         const char *updates[] = {
-            "ALTER TABLE `housekeeping` ADD COLUMN `lastsuccess` DATETIME;",
-            "UPDATE `housekeeping` SET `lastsuccess`=`lastrun`;",
+            "ALTER TABLE \"housekeeping\" ADD COLUMN \"lastsuccess\" DATETIME;",
+            "UPDATE \"housekeeping\" SET \"lastsuccess\"=\"lastrun\";",
             nullptr
         };
 
@@ -2780,12 +2780,12 @@ nullptr
     {
         const char *updates[] = {
             "ALTER TABLE recordedfile "
-            "DROP KEY `chanid`, "
-            "DROP COLUMN `chanid`, "
-            "DROP COLUMN `starttime`;",
+            "DROP KEY \"chanid\", "
+            "DROP COLUMN \"chanid\", "
+            "DROP COLUMN \"starttime\";",
             "ALTER TABLE recordedfile "
             "ADD COLUMN recordedid int(10) unsigned NOT NULL, "
-            "ADD UNIQUE KEY `recordedid` (recordedid);",
+            "ADD UNIQUE KEY \"recordedid\" (recordedid);",
             "ALTER TABLE recordedfile "
             "CHANGE audio_type audio_codec varchar(255) NOT NULL DEFAULT '';"
             "ALTER TABLE recordedfile "
@@ -3296,9 +3296,9 @@ nullptr
             "DROP TABLE IF EXISTS bdbookmark;",
             "CREATE TABLE bdbookmark ("
             "  serialid varchar(40) NOT NULL DEFAULT '',"
-            "  `name` varchar(128) DEFAULT NULL,"
+            "  \"name\" varchar(128) DEFAULT NULL,"
             "  bdstate varchar(4096) NOT NULL DEFAULT '',"
-            "  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"
+            "  \"timestamp\" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"
             "  PRIMARY KEY (serialid)"
             ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
@@ -3882,7 +3882,7 @@ bool InitializeMythSchema(void)
 "  freqid varchar(10) DEFAULT NULL,"
 "  sourceid int(10) unsigned DEFAULT NULL,"
 "  callsign varchar(20) NOT NULL DEFAULT '',"
-"  `name` varchar(64) NOT NULL DEFAULT '',"
+"  \"name\" varchar(64) NOT NULL DEFAULT '',"
 "  icon varchar(255) NOT NULL DEFAULT '',"
 "  finetune int(11) DEFAULT NULL,"
 "  videofilters varchar(255) NOT NULL DEFAULT '',"
@@ -3918,7 +3918,7 @@ bool InitializeMythSchema(void)
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE channelgroupnames ("
 "  grpid int(10) unsigned NOT NULL AUTO_INCREMENT,"
-"  `name` varchar(64) NOT NULL DEFAULT '0',"
+"  \"name\" varchar(64) NOT NULL DEFAULT '0',"
 "  PRIMARY KEY (grpid)"
 ") ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;",
 "CREATE TABLE channelscan ("
@@ -3993,10 +3993,10 @@ bool InitializeMythSchema(void)
 "  PRIMARY KEY (transportid)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE codecparams ("
-"  `profile` int(10) unsigned NOT NULL DEFAULT '0',"
-"  `name` varchar(128) NOT NULL DEFAULT '',"
-"  `value` varchar(128) DEFAULT NULL,"
-"  PRIMARY KEY (`profile`,`name`)"
+"  \"profile\" int(10) unsigned NOT NULL DEFAULT '0',"
+"  \"name\" varchar(128) NOT NULL DEFAULT '',"
+"  \"value\" varchar(128) DEFAULT NULL,"
+"  PRIMARY KEY (\"profile\",\"name\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE credits ("
 "  person mediumint(8) unsigned NOT NULL DEFAULT '0',"
@@ -4016,14 +4016,14 @@ bool InitializeMythSchema(void)
 "CREATE TABLE diseqc_config ("
 "  cardinputid int(10) unsigned NOT NULL,"
 "  diseqcid int(10) unsigned NOT NULL,"
-"  `value` varchar(16) NOT NULL DEFAULT '',"
+"  \"value\" varchar(16) NOT NULL DEFAULT '',"
 "  KEY id (cardinputid)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE diseqc_tree ("
 "  diseqcid int(10) unsigned NOT NULL AUTO_INCREMENT,"
 "  parentid int(10) unsigned DEFAULT NULL,"
 "  ordinal tinyint(3) unsigned NOT NULL,"
-"  `type` varchar(16) NOT NULL DEFAULT '',"
+"  \"type\" varchar(16) NOT NULL DEFAULT '',"
 "  subtype varchar(16) NOT NULL DEFAULT '',"
 "  description varchar(32) NOT NULL DEFAULT '',"
 "  switch_ports tinyint(3) unsigned NOT NULL DEFAULT '0',"
@@ -4040,19 +4040,19 @@ bool InitializeMythSchema(void)
 "  KEY parentid (parentid)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE displayprofilegroups ("
-"  `name` varchar(128) NOT NULL,"
+"  \"name\" varchar(128) NOT NULL,"
 "  hostname varchar(64) NOT NULL,"
 "  profilegroupid int(10) unsigned NOT NULL AUTO_INCREMENT,"
-"  PRIMARY KEY (`name`,hostname),"
+"  PRIMARY KEY (\"name\",hostname),"
 "  UNIQUE KEY profilegroupid (profilegroupid)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE displayprofiles ("
 "  profilegroupid int(10) unsigned NOT NULL,"
 "  profileid int(10) unsigned NOT NULL AUTO_INCREMENT,"
-"  `value` varchar(128) NOT NULL,"
-"  `data` varchar(255) NOT NULL DEFAULT '',"
+"  \"value\" varchar(128) NOT NULL,"
+"  \"data\" varchar(255) NOT NULL DEFAULT '',"
 "  KEY profilegroupid (profilegroupid),"
-"  KEY profileid (profileid,`value`),"
+"  KEY profileid (profileid,\"value\"),"
 "  KEY profileid_2 (profileid)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE dtv_multiplex ("
@@ -4090,12 +4090,12 @@ bool InitializeMythSchema(void)
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE dvdbookmark ("
 "  serialid varchar(16) NOT NULL DEFAULT '',"
-"  `name` varchar(32) DEFAULT NULL,"
+"  \"name\" varchar(32) DEFAULT NULL,"
 "  title smallint(6) NOT NULL DEFAULT '0',"
 "  audionum tinyint(4) NOT NULL DEFAULT '-1',"
 "  subtitlenum tinyint(4) NOT NULL DEFAULT '-1',"
 "  framenum bigint(20) NOT NULL DEFAULT '0',"
-"  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"
+"  \"timestamp\" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"
 "  PRIMARY KEY (serialid)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE dvdinput ("
@@ -4112,7 +4112,7 @@ bool InitializeMythSchema(void)
 "CREATE TABLE dvdtranscode ("
 "  intid int(11) NOT NULL AUTO_INCREMENT,"
 "  input int(10) unsigned DEFAULT NULL,"
-"  `name` varchar(128) NOT NULL,"
+"  \"name\" varchar(128) NOT NULL,"
 "  sync_mode int(10) unsigned DEFAULT NULL,"
 "  use_yv12 tinyint(1) DEFAULT NULL,"
 "  cliptop int(11) DEFAULT NULL,"
@@ -4144,14 +4144,14 @@ bool InitializeMythSchema(void)
 "  tableid tinyint(3) unsigned NOT NULL,"
 "  version tinyint(3) unsigned NOT NULL,"
 "  endtime int(10) unsigned NOT NULL,"
-"  `status` tinyint(4) NOT NULL DEFAULT '0',"
-"  PRIMARY KEY (chanid,eventid,`status`)"
+"  \"status\" tinyint(4) NOT NULL DEFAULT '0',"
+"  PRIMARY KEY (chanid,eventid,\"status\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE filemarkup ("
 "  filename text NOT NULL,"
 "  mark mediumint(8) unsigned NOT NULL DEFAULT '0',"
-"  `offset` bigint(20) unsigned DEFAULT NULL,"
-"  `type` tinyint(4) NOT NULL DEFAULT '0',"
+"  \"offset\" bigint(20) unsigned DEFAULT NULL,"
+"  \"type\" tinyint(4) NOT NULL DEFAULT '0',"
 "  KEY filename (filename(255))"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE housekeeping ("
@@ -4165,9 +4165,9 @@ bool InitializeMythSchema(void)
 "  inputgroupname varchar(32) NOT NULL"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE internetcontent ("
-"  `name` varchar(255) NOT NULL,"
+"  \"name\" varchar(255) NOT NULL,"
 "  thumbnail varchar(255) DEFAULT NULL,"
-"  `type` smallint(3) NOT NULL,"
+"  \"type\" smallint(3) NOT NULL,"
 "  author varchar(128) NOT NULL,"
 "  description text NOT NULL,"
 "  commandline text NOT NULL,"
@@ -4177,7 +4177,7 @@ bool InitializeMythSchema(void)
 "  tree tinyint(1) NOT NULL,"
 "  podcast tinyint(1) NOT NULL,"
 "  download tinyint(1) NOT NULL,"
-"  `host` varchar(128) DEFAULT NULL"
+"  \"host\" varchar(128) DEFAULT NULL"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE internetcontentarticles ("
 "  feedtitle varchar(255) NOT NULL,"
@@ -4189,12 +4189,12 @@ bool InitializeMythSchema(void)
 "  episode smallint(5) NOT NULL DEFAULT '0',"
 "  description text NOT NULL,"
 "  url text NOT NULL,"
-"  `type` smallint(3) NOT NULL,"
+"  \"type\" smallint(3) NOT NULL,"
 "  thumbnail text NOT NULL,"
 "  mediaURL text NOT NULL,"
 "  author varchar(255) NOT NULL,"
-"  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
-"  `time` int(11) NOT NULL,"
+"  \"date\" datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
+"  \"time\" int(11) NOT NULL,"
 "  rating varchar(255) NOT NULL,"
 "  filesize bigint(20) NOT NULL,"
 "  player varchar(255) NOT NULL,"
@@ -4203,7 +4203,7 @@ bool InitializeMythSchema(void)
 "  downloadargs text NOT NULL,"
 "  width smallint(6) NOT NULL,"
 "  height smallint(6) NOT NULL,"
-"  `language` varchar(128) NOT NULL,"
+"  \"language\" varchar(128) NOT NULL,"
 "  podcast tinyint(1) NOT NULL,"
 "  downloadable tinyint(1) NOT NULL,"
 "  customhtml tinyint(1) NOT NULL,"
@@ -4224,7 +4224,7 @@ bool InitializeMythSchema(void)
 "  iptvid smallint(6) unsigned NOT NULL AUTO_INCREMENT,"
 "  chanid int(10) unsigned NOT NULL,"
 "  url text NOT NULL,"
-"  `type` set('data','rfc2733-1','rfc2733-2','rfc5109-1','rfc5109-2','smpte2022-1','smpte2022-2') DEFAULT NULL,"
+"  \"type\" set('data','rfc2733-1','rfc2733-2','rfc5109-1','rfc5109-2','smpte2022-1','smpte2022-2') DEFAULT NULL,"
 "  bitrate int(10) unsigned NOT NULL,"
 "  PRIMARY KEY (iptvid)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
@@ -4233,17 +4233,17 @@ bool InitializeMythSchema(void)
 "  chanid int(10) NOT NULL DEFAULT '0',"
 "  starttime datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
 "  inserttime datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
-"  `type` int(11) NOT NULL DEFAULT '0',"
+"  \"type\" int(11) NOT NULL DEFAULT '0',"
 "  cmds int(11) NOT NULL DEFAULT '0',"
 "  flags int(11) NOT NULL DEFAULT '0',"
-"  `status` int(11) NOT NULL DEFAULT '0',"
+"  \"status\" int(11) NOT NULL DEFAULT '0',"
 "  statustime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"
 "  hostname varchar(64) NOT NULL DEFAULT '',"
 "  args blob NOT NULL,"
-"  `comment` varchar(128) NOT NULL DEFAULT '',"
+"  \"comment\" varchar(128) NOT NULL DEFAULT '',"
 "  schedruntime datetime NOT NULL DEFAULT '2007-01-01 00:00:00',"
 "  PRIMARY KEY (id),"
-"  UNIQUE KEY chanid (chanid,starttime,`type`,inserttime)"
+"  UNIQUE KEY chanid (chanid,starttime,\"type\",inserttime)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE jumppoints ("
 "  destination varchar(128) NOT NULL DEFAULT '',"
@@ -4253,12 +4253,12 @@ bool InitializeMythSchema(void)
 "  PRIMARY KEY (destination,hostname)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE keybindings ("
-"  `context` varchar(32) NOT NULL DEFAULT '',"
-"  `action` varchar(32) NOT NULL DEFAULT '',"
+"  \"context\" varchar(32) NOT NULL DEFAULT '',"
+"  \"action\" varchar(32) NOT NULL DEFAULT '',"
 "  description varchar(255) DEFAULT NULL,"
 "  keylist varchar(128) DEFAULT NULL,"
 "  hostname varchar(64) NOT NULL DEFAULT '',"
-"  PRIMARY KEY (`context`,`action`,hostname)"
+"  PRIMARY KEY (\"context\",\"action\",hostname)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE keyword ("
 "  phrase varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',"
@@ -4283,7 +4283,7 @@ bool InitializeMythSchema(void)
 "  lastmodified datetime NOT NULL,"
 "  relativeurl varchar(512) NOT NULL,"
 "  fullurl varchar(1024) NOT NULL,"
-"  `status` int(10) unsigned NOT NULL DEFAULT '0',"
+"  \"status\" int(10) unsigned NOT NULL DEFAULT '0',"
 "  statusmessage varchar(256) NOT NULL,"
 "  sourcefile varchar(512) NOT NULL,"
 "  sourcehost varchar(64) NOT NULL,"
@@ -4295,21 +4295,21 @@ bool InitializeMythSchema(void)
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE logging ("
 "  id bigint(20) unsigned NOT NULL AUTO_INCREMENT,"
-"  `host` varchar(64) NOT NULL DEFAULT '',"
+"  \"host\" varchar(64) NOT NULL DEFAULT '',"
 "  application varchar(64) NOT NULL DEFAULT '',"
 "  pid int(11) NOT NULL DEFAULT '0',"
 "  tid int(11) NOT NULL DEFAULT '0',"
 "  thread varchar(64) NOT NULL DEFAULT '',"
 "  filename varchar(255) NOT NULL DEFAULT '',"
 "  line int(11) NOT NULL DEFAULT '0',"
-"  `function` varchar(255) NOT NULL DEFAULT '',"
+"  \"function\" varchar(255) NOT NULL DEFAULT '',"
 "  msgtime datetime NOT NULL,"
-"  `level` int(11) NOT NULL DEFAULT '0',"
+"  \"level\" int(11) NOT NULL DEFAULT '0',"
 "  message varchar(2048) NOT NULL,"
 "  PRIMARY KEY (id),"
-"  KEY `host` (`host`,application,pid,msgtime),"
+"  KEY \"host\" (\"host\",application,pid,msgtime),"
 "  KEY msgtime (msgtime),"
-"  KEY `level` (`level`)"
+"  KEY \"level\" (\"level\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE mythlog ("
 "  logid int(10) unsigned NOT NULL AUTO_INCREMENT,"
@@ -4317,7 +4317,7 @@ bool InitializeMythSchema(void)
 "  priority int(11) NOT NULL DEFAULT '0',"
 "  acknowledged tinyint(1) DEFAULT '0',"
 "  logdate datetime DEFAULT NULL,"
-"  `host` varchar(128) DEFAULT NULL,"
+"  \"host\" varchar(128) DEFAULT NULL,"
 "  message varchar(255) NOT NULL DEFAULT '',"
 "  details varchar(16000) NOT NULL DEFAULT '',"
 "  PRIMARY KEY (logid),"
@@ -4350,7 +4350,7 @@ bool InitializeMythSchema(void)
 "  recordid int(11) NOT NULL DEFAULT '0',"
 "  station varchar(20) NOT NULL DEFAULT '',"
 "  rectype int(10) unsigned NOT NULL DEFAULT '0',"
-"  `duplicate` tinyint(1) NOT NULL DEFAULT '0',"
+"  \"duplicate\" tinyint(1) NOT NULL DEFAULT '0',"
 "  recstatus int(11) NOT NULL DEFAULT '0',"
 "  reactivate smallint(6) NOT NULL DEFAULT '0',"
 "  generic tinyint(1) NOT NULL,"
@@ -4370,9 +4370,9 @@ bool InitializeMythSchema(void)
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE people ("
 "  person mediumint(8) unsigned NOT NULL AUTO_INCREMENT,"
-"  `name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',"
+"  \"name\" varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',"
 "  PRIMARY KEY (person),"
-"  UNIQUE KEY `name` (`name`(41))"
+"  UNIQUE KEY \"name\" (\"name\"(41))"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE pidcache ("
 "  chanid smallint(6) NOT NULL DEFAULT '0',"
@@ -4381,13 +4381,13 @@ bool InitializeMythSchema(void)
 "  KEY chanid (chanid)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE playgroup ("
-"  `name` varchar(32) NOT NULL DEFAULT '',"
+"  \"name\" varchar(32) NOT NULL DEFAULT '',"
 "  titlematch varchar(255) NOT NULL DEFAULT '',"
 "  skipahead int(11) NOT NULL DEFAULT '0',"
 "  skipback int(11) NOT NULL DEFAULT '0',"
 "  timestretch int(11) NOT NULL DEFAULT '0',"
 "  jump int(11) NOT NULL DEFAULT '0',"
-"  PRIMARY KEY (`name`)"
+"  PRIMARY KEY (\"name\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE powerpriority ("
 "  priorityname varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,"
@@ -4397,12 +4397,12 @@ bool InitializeMythSchema(void)
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE profilegroups ("
 "  id int(10) unsigned NOT NULL AUTO_INCREMENT,"
-"  `name` varchar(128) DEFAULT NULL,"
+"  \"name\" varchar(128) DEFAULT NULL,"
 "  cardtype varchar(32) NOT NULL DEFAULT 'V4L',"
 "  is_default int(1) DEFAULT '0',"
 "  hostname varchar(64) DEFAULT NULL,"
 "  PRIMARY KEY (id),"
-"  UNIQUE KEY `name` (`name`,hostname),"
+"  UNIQUE KEY \"name\" (\"name\",hostname),"
 "  KEY cardtype (cardtype)"
 ") ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;",
 "CREATE TABLE program ("
@@ -4433,8 +4433,8 @@ bool InitializeMythSchema(void)
 "  manualid int(10) unsigned NOT NULL DEFAULT '0',"
 "  generic tinyint(1) DEFAULT '0',"
 "  listingsource int(11) NOT NULL DEFAULT '0',"
-"  `first` tinyint(1) NOT NULL DEFAULT '0',"
-"  `last` tinyint(1) NOT NULL DEFAULT '0',"
+"  \"first\" tinyint(1) NOT NULL DEFAULT '0',"
+"  \"last\" tinyint(1) NOT NULL DEFAULT '0',"
 "  audioprop set('STEREO','MONO','SURROUND','DOLBY','HARDHEAR','VISUALIMPAIR') NOT NULL,"
 "  subtitletypes set('HARDHEAR','NORMAL','ONSCREEN','SIGNED') NOT NULL,"
 "  videoprop set('HDTV','WIDESCREEN','AVC') NOT NULL,"
@@ -4462,19 +4462,19 @@ bool InitializeMythSchema(void)
 "CREATE TABLE programrating ("
 "  chanid int(10) unsigned NOT NULL DEFAULT '0',"
 "  starttime datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
-"  `system` varchar(8) DEFAULT NULL,"
+"  \"system\" varchar(8) DEFAULT NULL,"
 "  rating varchar(16) DEFAULT NULL,"
-"  UNIQUE KEY chanid (chanid,starttime,`system`,rating),"
-"  KEY starttime (starttime,`system`)"
+"  UNIQUE KEY chanid (chanid,starttime,\"system\",rating),"
+"  KEY starttime (starttime,\"system\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE recgrouppassword ("
 "  recgroup varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',"
-"  `password` varchar(10) NOT NULL DEFAULT '',"
+"  \"password\" varchar(10) NOT NULL DEFAULT '',"
 "  PRIMARY KEY (recgroup)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE record ("
 "  recordid int(10) unsigned NOT NULL AUTO_INCREMENT,"
-"  `type` int(10) unsigned NOT NULL DEFAULT '0',"
+"  \"type\" int(10) unsigned NOT NULL DEFAULT '0',"
 "  chanid int(10) unsigned DEFAULT NULL,"
 "  starttime time NOT NULL DEFAULT '00:00:00',"
 "  startdate date NOT NULL DEFAULT '0000-00-00',"
@@ -4486,7 +4486,7 @@ bool InitializeMythSchema(void)
 "  season smallint(5) NOT NULL,"
 "  episode smallint(5) NOT NULL,"
 "  category varchar(64) NOT NULL DEFAULT '',"
-"  `profile` varchar(128) NOT NULL DEFAULT 'Default',"
+"  \"profile\" varchar(128) NOT NULL DEFAULT 'Default',"
 "  recpriority int(10) NOT NULL DEFAULT '0',"
 "  autoexpire int(11) NOT NULL DEFAULT '0',"
 "  maxepisodes int(11) NOT NULL DEFAULT '0',"
@@ -4529,7 +4529,7 @@ bool InitializeMythSchema(void)
 "  KEY programid (programid),"
 "  KEY maxepisodes (maxepisodes),"
 "  KEY search (search),"
-"  KEY `type` (`type`)"
+"  KEY \"type\" (\"type\")"
 ") ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;",
 "CREATE TABLE recorded ("
 "  chanid int(10) unsigned NOT NULL DEFAULT '0',"
@@ -4557,7 +4557,7 @@ bool InitializeMythSchema(void)
 "  stars float NOT NULL DEFAULT '0',"
 "  previouslyshown tinyint(1) DEFAULT '0',"
 "  originalairdate date DEFAULT NULL,"
-"  `preserve` tinyint(1) NOT NULL DEFAULT '0',"
+"  \"preserve\" tinyint(1) NOT NULL DEFAULT '0',"
 "  findid int(11) NOT NULL DEFAULT '0',"
 "  deletepending tinyint(1) NOT NULL DEFAULT '0',"
 "  transcoder int(11) NOT NULL DEFAULT '0',"
@@ -4567,8 +4567,8 @@ bool InitializeMythSchema(void)
 "  progstart datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
 "  progend datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
 "  playgroup varchar(32) NOT NULL DEFAULT 'Default',"
-"  `profile` varchar(32) NOT NULL DEFAULT '',"
-"  `duplicate` tinyint(1) NOT NULL DEFAULT '0',"
+"  \"profile\" varchar(32) NOT NULL DEFAULT '',"
+"  \"duplicate\" tinyint(1) NOT NULL DEFAULT '0',"
 "  transcoded tinyint(1) NOT NULL DEFAULT '0',"
 "  watched tinyint(4) NOT NULL DEFAULT '0',"
 "  storagegroup varchar(32) NOT NULL DEFAULT 'Default',"
@@ -4585,7 +4585,7 @@ bool InitializeMythSchema(void)
 "CREATE TABLE recordedartwork ("
 "  inetref varchar(255) NOT NULL,"
 "  season smallint(5) NOT NULL,"
-"  `host` text NOT NULL,"
+"  \"host\" text NOT NULL,"
 "  coverart text NOT NULL,"
 "  fanart text NOT NULL,"
 "  banner text NOT NULL"
@@ -4612,7 +4612,7 @@ bool InitializeMythSchema(void)
 "  audio_channels tinyint(3) unsigned NOT NULL DEFAULT '0',"
 "  audio_type varchar(255) NOT NULL DEFAULT '',"
 "  video_type varchar(255) NOT NULL DEFAULT '',"
-"  `comment` varchar(255) NOT NULL DEFAULT '',"
+"  \"comment\" varchar(255) NOT NULL DEFAULT '',"
 "  hostname varchar(64) NOT NULL,"
 "  storagegroup varchar(32) NOT NULL,"
 "  id int(11) NOT NULL AUTO_INCREMENT,"
@@ -4624,9 +4624,9 @@ bool InitializeMythSchema(void)
 "  chanid int(10) unsigned NOT NULL DEFAULT '0',"
 "  starttime datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
 "  mark mediumint(8) unsigned NOT NULL DEFAULT '0',"
-"  `type` tinyint(4) NOT NULL DEFAULT '0',"
-"  `data` int(11) unsigned DEFAULT NULL,"
-"  PRIMARY KEY (chanid,starttime,`type`,mark)"
+"  \"type\" tinyint(4) NOT NULL DEFAULT '0',"
+"  \"data\" int(11) unsigned DEFAULT NULL,"
+"  PRIMARY KEY (chanid,starttime,\"type\",mark)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE recordedprogram ("
 "  chanid int(10) unsigned NOT NULL DEFAULT '0',"
@@ -4656,8 +4656,8 @@ bool InitializeMythSchema(void)
 "  manualid int(10) unsigned NOT NULL DEFAULT '0',"
 "  generic tinyint(1) DEFAULT '0',"
 "  listingsource int(11) NOT NULL DEFAULT '0',"
-"  `first` tinyint(1) NOT NULL DEFAULT '0',"
-"  `last` tinyint(1) NOT NULL DEFAULT '0',"
+"  \"first\" tinyint(1) NOT NULL DEFAULT '0',"
+"  \"last\" tinyint(1) NOT NULL DEFAULT '0',"
 "  audioprop set('STEREO','MONO','SURROUND','DOLBY','HARDHEAR','VISUALIMPAIR') NOT NULL,"
 "  subtitletypes set('HARDHEAR','NORMAL','ONSCREEN','SIGNED') NOT NULL,"
 "  videoprop set('HDTV','WIDESCREEN','AVC','720','1080','DAMAGED') NOT NULL,"
@@ -4672,18 +4672,18 @@ bool InitializeMythSchema(void)
 "CREATE TABLE recordedrating ("
 "  chanid int(10) unsigned NOT NULL DEFAULT '0',"
 "  starttime datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
-"  `system` varchar(8) DEFAULT NULL,"
+"  \"system\" varchar(8) DEFAULT NULL,"
 "  rating varchar(16) DEFAULT NULL,"
-"  UNIQUE KEY chanid (chanid,starttime,`system`,rating),"
-"  KEY starttime (starttime,`system`)"
+"  UNIQUE KEY chanid (chanid,starttime,\"system\",rating),"
+"  KEY starttime (starttime,\"system\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE recordedseek ("
 "  chanid int(10) unsigned NOT NULL DEFAULT '0',"
 "  starttime datetime NOT NULL DEFAULT '0000-00-00 00:00:00',"
 "  mark mediumint(8) unsigned NOT NULL DEFAULT '0',"
-"  `offset` bigint(20) unsigned NOT NULL,"
-"  `type` tinyint(4) NOT NULL DEFAULT '0',"
-"  PRIMARY KEY (chanid,starttime,`type`,mark)"
+"  \"offset\" bigint(20) unsigned NOT NULL,"
+"  \"type\" tinyint(4) NOT NULL DEFAULT '0',"
+"  PRIMARY KEY (chanid,starttime,\"type\",mark)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE recordfilter ("
 "  filterid int(10) unsigned NOT NULL,"
@@ -4694,7 +4694,7 @@ bool InitializeMythSchema(void)
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE recordingprofiles ("
 "  id int(10) unsigned NOT NULL AUTO_INCREMENT,"
-"  `name` varchar(128) DEFAULT NULL,"
+"  \"name\" varchar(128) DEFAULT NULL,"
 "  videocodec varchar(128) DEFAULT NULL,"
 "  audiocodec varchar(128) DEFAULT NULL,"
 "  profilegroup int(10) unsigned NOT NULL DEFAULT '0',"
@@ -4731,10 +4731,10 @@ bool InitializeMythSchema(void)
 "  PRIMARY KEY (fileid)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE settings ("
-"  `value` varchar(128) NOT NULL DEFAULT '',"
-"  `data` varchar(16000) NOT NULL DEFAULT '',"
+"  \"value\" varchar(128) NOT NULL DEFAULT '',"
+"  \"data\" varchar(16000) NOT NULL DEFAULT '',"
 "  hostname varchar(64) DEFAULT NULL,"
-"  KEY `value` (`value`,hostname)"
+"  KEY \"value\" (\"value\",hostname)"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE storagegroup ("
 "  id int(11) NOT NULL AUTO_INCREMENT,"
@@ -4803,8 +4803,8 @@ bool InitializeMythSchema(void)
 "  certification varchar(128) DEFAULT NULL,"
 "  genre varchar(128) DEFAULT '',"
 "  releasedate date DEFAULT NULL,"
-"  `language` varchar(10) DEFAULT NULL,"
-"  `status` varchar(64) DEFAULT NULL,"
+"  \"language\" varchar(10) DEFAULT NULL,"
+"  \"status\" varchar(64) DEFAULT NULL,"
 "  rating float DEFAULT '0',"
 "  ratingcount int(10) DEFAULT '0',"
 "  runtime smallint(5) unsigned DEFAULT '0',"
@@ -4836,7 +4836,7 @@ bool InitializeMythSchema(void)
 "  inetref varchar(255) NOT NULL,"
 "  collectionref int(10) NOT NULL DEFAULT '-1',"
 "  homepage text NOT NULL,"
-"  `year` int(10) unsigned NOT NULL,"
+"  \"year\" int(10) unsigned NOT NULL,"
 "  releasedate date NOT NULL,"
 "  userrating float NOT NULL,"
 "  length int(10) unsigned NOT NULL,"
@@ -4845,7 +4845,7 @@ bool InitializeMythSchema(void)
 "  episode smallint(5) unsigned NOT NULL DEFAULT '0',"
 "  showlevel int(10) unsigned NOT NULL,"
 "  filename text NOT NULL,"
-"  `hash` varchar(128) NOT NULL,"
+"  \"hash\" varchar(128) NOT NULL,"
 "  coverfile text NOT NULL,"
 "  childid int(11) NOT NULL DEFAULT '-1',"
 "  browse tinyint(1) NOT NULL DEFAULT '1',"
@@ -4854,7 +4854,7 @@ bool InitializeMythSchema(void)
 "  playcommand varchar(255) DEFAULT NULL,"
 "  category int(10) unsigned NOT NULL DEFAULT '0',"
 "  trailer text,"
-"  `host` text NOT NULL,"
+"  \"host\" text NOT NULL,"
 "  screenshot text,"
 "  banner text,"
 "  fanart text,"
@@ -4886,8 +4886,8 @@ bool InitializeMythSchema(void)
 "CREATE TABLE videopart ("
 "  fileid bigint(20) unsigned NOT NULL,"
 "  videoid int(10) unsigned NOT NULL,"
-"  `order` smallint(5) unsigned NOT NULL DEFAULT '1',"
-"  PRIMARY KEY (videoid,`order`)"
+"  \"order\" smallint(5) unsigned NOT NULL DEFAULT '1',"
+"  PRIMARY KEY (videoid,\"order\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE videopathinfo ("
 "  intid int(10) unsigned NOT NULL AUTO_INCREMENT,"
@@ -4899,17 +4899,17 @@ bool InitializeMythSchema(void)
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE videosource ("
 "  sourceid int(10) unsigned NOT NULL AUTO_INCREMENT,"
-"  `name` varchar(128) NOT NULL DEFAULT '',"
+"  \"name\" varchar(128) NOT NULL DEFAULT '',"
 "  xmltvgrabber varchar(128) DEFAULT NULL,"
 "  userid varchar(128) NOT NULL DEFAULT '',"
 "  freqtable varchar(16) NOT NULL DEFAULT 'default',"
 "  lineupid varchar(64) DEFAULT NULL,"
-"  `password` varchar(64) DEFAULT NULL,"
+"  \"password\" varchar(64) DEFAULT NULL,"
 "  useeit smallint(6) NOT NULL DEFAULT '0',"
 "  configpath varchar(4096) DEFAULT NULL,"
 "  dvb_nit_id int(6) DEFAULT '-1',"
 "  PRIMARY KEY (sourceid),"
-"  UNIQUE KEY `name` (`name`)"
+"  UNIQUE KEY \"name\" (\"name\")"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE videotypes ("
 "  intid int(10) unsigned NOT NULL AUTO_INCREMENT,"

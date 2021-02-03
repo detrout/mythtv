@@ -935,8 +935,8 @@ static bool doUpgradeMusicDatabaseSchema(QString &dbver)
     {
         const QString updates[] =
         {
-            "CREATE INDEX `song_id` ON music_albumart (song_id);",
-            "CREATE INDEX `artist_id` ON music_albums (artist_id);",
+            "CREATE INDEX \"song_id\" ON music_albumart (song_id);",
+            "CREATE INDEX \"artist_id\" ON music_albums (artist_id);",
             ""
         };
 

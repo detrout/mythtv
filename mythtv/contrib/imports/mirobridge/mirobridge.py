@@ -704,10 +704,10 @@ def delOldRecorded(chanid, starttime, endtime, title, \
     uses the oldrecorded table outside of its original intent.
     return nothing
     '''
-    sql_cmd = u"""DELETE FROM `mythconverg`.`oldrecorded`
-                        WHERE `oldrecorded`.`chanid` = '%s'
-                          AND `oldrecorded`.`starttime` = '%s'
-                          AND `oldrecorded`.`endtime` = '%s';"""
+    sql_cmd = u"""DELETE FROM \"mythconverg\".\"oldrecorded\"
+                        WHERE \"oldrecorded\".\"chanid\" = '%s'
+                          AND \"oldrecorded\".\"starttime\" = '%s'
+                          AND \"oldrecorded\".\"endtime\" = '%s';"""
     sql_del_a_record(sql_cmd % (chanid, set_del_datatime(starttime),
                      set_del_datatime(endtime)))
 # end delOldRecorded()
@@ -718,9 +718,9 @@ def delRecorded(chanid, starttime):
     may not exist.
     return nothing
     '''
-    sql_cmd = u"""DELETE FROM `mythconverg`.`recorded`
-                        WHERE `recorded`.`chanid` = %s
-                          AND `recorded`.`starttime` = '%s';"""
+    sql_cmd = u"""DELETE FROM \"mythconverg\".\"recorded\"
+                        WHERE \"recorded\".\"chanid\" = %s
+                          AND \"recorded\".\"starttime\" = '%s';"""
     sql_del_a_record(sql_cmd % (chanid, set_del_datatime(starttime)))
 # end delRecorded()
 

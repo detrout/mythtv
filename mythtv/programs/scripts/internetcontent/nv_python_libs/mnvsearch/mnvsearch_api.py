@@ -356,10 +356,10 @@ class Videos(object):
         return a list of items found in the search or an empty dictionary if none were found
         '''
         if feedtitle:
-            sqlStatement = u"(SELECT title, description, subtitle, season, episode, url, type, thumbnail, mediaURL, author, date, rating, filesize, player, playerargs, download, downloadargs, time, width, height, language, customhtml, countries FROM `internetcontentarticles` WHERE `feedtitle` LIKE '%%%%FEEDTITLE%%%%' AND (%s)) ORDER BY title ASC LIMIT %s , %s"
+            sqlStatement = u"(SELECT title, description, subtitle, season, episode, url, type, thumbnail, mediaURL, author, date, rating, filesize, player, playerargs, download, downloadargs, time, width, height, language, customhtml, countries FROM \"internetcontentarticles\" WHERE \"feedtitle\" LIKE '%%%%FEEDTITLE%%%%' AND (%s)) ORDER BY title ASC LIMIT %s , %s"
         else:
-            sqlStatement = u'(SELECT title, description, subtitle, season, episode, url, type, thumbnail, mediaURL, author, date, rating, filesize, player, playerargs, download, downloadargs, time, width, height, language, customhtml, countries FROM `internetcontentarticles` WHERE %s) ORDER BY title ASC LIMIT %s , %s'
-        searchTerm = u"`title` LIKE '%%SEARCHTERM%%' OR `description` LIKE '%%SEARCHTERM%%'"
+            sqlStatement = u'(SELECT title, description, subtitle, season, episode, url, type, thumbnail, mediaURL, author, date, rating, filesize, player, playerargs, download, downloadargs, time, width, height, language, customhtml, countries FROM \"internetcontentarticles\" WHERE %s) ORDER BY title ASC LIMIT %s , %s'
+        searchTerm = u"\"title\" LIKE '%%SEARCHTERM%%' OR \"description\" LIKE '%%SEARCHTERM%%'"
 
         # Create the query variables search terms and the from/to paging values
         searchList = searchTerms.split(u';')

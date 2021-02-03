@@ -106,8 +106,8 @@ static void AddFileType(const QString &extension,
 static void UpdateHashes(void)
 {
     MSqlQuery query(MSqlQuery::InitCon());
-    query.prepare("SELECT `filename`, `host` FROM videometadata WHERE "
-                  "`hash` = \"\"");
+    query.prepare("SELECT \"filename\", \"host\" FROM videometadata WHERE "
+                  "\"hash\" = \"\"");
     if (query.exec() && query.size())
     {
         while (query.next())
@@ -129,9 +129,9 @@ static void UpdateHashes(void)
 
             MSqlQuery updatequery(MSqlQuery::InitCon());
 
-            updatequery.prepare("UPDATE videometadata set `hash` = :HASH "
-                          "WHERE `filename` = :FILENAME AND "
-                          "`host` = :HOST");
+            updatequery.prepare("UPDATE videometadata set \"hash\" = :HASH "
+                          "WHERE \"filename\" = :FILENAME AND "
+                          "\"host\" = :HOST");
             updatequery.bindValue(":HASH", hash);
             updatequery.bindValue(":FILENAME", filename);
             updatequery.bindValue(":HOST", host);
@@ -171,7 +171,7 @@ static bool InitializeVideoSchema(void)
 "CREATE TABLE dvdtranscode ("
 "  intid int(11) NOT NULL AUTO_INCREMENT,"
 "  input int(10) unsigned DEFAULT NULL,"
-"  `name` varchar(128) NOT NULL,"
+"  \"name\" varchar(128) NOT NULL,"
 "  sync_mode int(10) unsigned DEFAULT NULL,"
 "  use_yv12 tinyint(1) DEFAULT NULL,"
 "  cliptop int(11) DEFAULT NULL,"
@@ -200,8 +200,8 @@ static bool InitializeVideoSchema(void)
 "CREATE TABLE filemarkup ("
 "  filename text NOT NULL,"
 "  mark mediumint(8) unsigned NOT NULL DEFAULT '0',"
-"  `offset` bigint(20) unsigned DEFAULT NULL,"
-"  `type` tinyint(4) NOT NULL DEFAULT '0',"
+"  \"offset\" bigint(20) unsigned DEFAULT NULL,"
+"  \"type\" tinyint(4) NOT NULL DEFAULT '0',"
 "  KEY filename (filename(255))"
 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 "CREATE TABLE videocast ("
@@ -235,7 +235,7 @@ static bool InitializeVideoSchema(void)
 "  rating varchar(128) NOT NULL,"
 "  inetref varchar(255) NOT NULL,"
 "  homepage text NOT NULL,"
-"  `year` int(10) unsigned NOT NULL,"
+"  \"year\" int(10) unsigned NOT NULL,"
 "  releasedate date NOT NULL,"
 "  userrating float NOT NULL,"
 "  length int(10) unsigned NOT NULL,"
@@ -243,7 +243,7 @@ static bool InitializeVideoSchema(void)
 "  episode smallint(5) unsigned NOT NULL DEFAULT '0',"
 "  showlevel int(10) unsigned NOT NULL,"
 "  filename text NOT NULL,"
-"  `hash` varchar(128) NOT NULL,"
+"  \"hash\" varchar(128) NOT NULL,"
 "  coverfile text NOT NULL,"
 "  childid int(11) NOT NULL DEFAULT '-1',"
 "  browse tinyint(1) NOT NULL DEFAULT '1',"
@@ -252,7 +252,7 @@ static bool InitializeVideoSchema(void)
 "  playcommand varchar(255) DEFAULT NULL,"
 "  category int(10) unsigned NOT NULL DEFAULT '0',"
 "  trailer text,"
-"  `host` text NOT NULL,"
+"  \"host\" text NOT NULL,"
 "  screenshot text,"
 "  banner text,"
 "  fanart text,"
@@ -495,7 +495,7 @@ bool doUpgradeVideoDatabaseSchema(void)
     if (dbver == "1019")
     {
         QStringList updates(
-                "ALTER TABLE videometadata ADD `trailer` TEXT;");
+                "ALTER TABLE videometadata ADD \"trailer\" TEXT;");
         if (!performActualUpdate(updates, "1020", dbver,
                                  MythVideoVersionName))
             return false;
@@ -539,9 +539,9 @@ bool doUpgradeVideoDatabaseSchema(void)
     if (dbver == "1022")
     {
         QStringList updates;
-        updates += "ALTER TABLE videometadata ADD `screenshot` TEXT;";
-        updates += "ALTER TABLE videometadata ADD `banner` TEXT;";
-        updates += "ALTER TABLE videometadata ADD `fanart` TEXT;";
+        updates += "ALTER TABLE videometadata ADD \"screenshot\" TEXT;";
+        updates += "ALTER TABLE videometadata ADD \"banner\" TEXT;";
+        updates += "ALTER TABLE videometadata ADD \"fanart\" TEXT;";
         if (!performActualUpdate(updates, "1023", dbver,
                                  MythVideoVersionName))
             return false;
@@ -550,12 +550,12 @@ bool doUpgradeVideoDatabaseSchema(void)
     if (dbver == "1023")
     {
         QStringList updates;
-        updates += "ALTER TABLE videometadata ADD `subtitle` TEXT "
-                   "NOT NULL AFTER `title`;";
-        updates += "ALTER TABLE videometadata ADD `season` SMALLINT "
-                   "UNSIGNED NOT NULL DEFAULT '0' AFTER `length`;";
-        updates += "ALTER TABLE videometadata ADD `episode` SMALLINT "
-                   "UNSIGNED NOT NULL DEFAULT '0' AFTER `season`;";
+        updates += "ALTER TABLE videometadata ADD \"subtitle\" TEXT "
+                   "NOT NULL AFTER \"title\";";
+        updates += "ALTER TABLE videometadata ADD \"season\" SMALLINT "
+                   "UNSIGNED NOT NULL DEFAULT '0' AFTER \"length\";";
+        updates += "ALTER TABLE videometadata ADD \"episode\" SMALLINT "
+                   "UNSIGNED NOT NULL DEFAULT '0' AFTER \"season\";";
         if (!performActualUpdate(updates, "1024", dbver,
                                  MythVideoVersionName))
             return false;
@@ -574,8 +574,8 @@ bool doUpgradeVideoDatabaseSchema(void)
     if (dbver == "1025")
     {
         QStringList updates;
-        updates += "ALTER TABLE videometadata ADD `insertdate` TIMESTAMP "
-                   "NULL DEFAULT CURRENT_TIMESTAMP AFTER `fanart`;";
+        updates += "ALTER TABLE videometadata ADD \"insertdate\" TIMESTAMP "
+                   "NULL DEFAULT CURRENT_TIMESTAMP AFTER \"fanart\";";
         if (!performActualUpdate(updates, "1026", dbver,
                                  MythVideoVersionName))
             return false;
@@ -649,10 +649,10 @@ bool doUpgradeVideoDatabaseSchema(void)
     if (dbver == "1028")
     {
         QStringList updates;
-        updates += "ALTER TABLE videometadata ADD `releasedate` DATE "
-                   "NOT NULL AFTER `year`;";
-        updates += "ALTER TABLE videometadata ADD `homepage` TEXT "
-                   "NOT NULL AFTER `inetref`;";
+        updates += "ALTER TABLE videometadata ADD \"releasedate\" DATE "
+                   "NOT NULL AFTER \"year\";";
+        updates += "ALTER TABLE videometadata ADD \"homepage\" TEXT "
+                   "NOT NULL AFTER \"inetref\";";
         if (!performActualUpdate(updates, "1029", dbver,
                                  MythVideoVersionName))
             return false;
@@ -661,8 +661,8 @@ bool doUpgradeVideoDatabaseSchema(void)
     if (dbver == "1029")
     {
         QStringList updates;
-        updates += "ALTER TABLE videometadata ADD `hash` VARCHAR(128) "
-                   "NOT NULL AFTER `filename`;";
+        updates += "ALTER TABLE videometadata ADD \"hash\" VARCHAR(128) "
+                   "NOT NULL AFTER \"filename\";";
         if (!performActualUpdate(updates, "1030", dbver,
                                  MythVideoVersionName))
             return false;
@@ -737,9 +737,9 @@ bool doUpgradeVideoDatabaseSchema(void)
         updates += "DROP TEMPORARY TABLE bad_videometadatacast;";
         updates += "DROP TEMPORARY TABLE bad_videometadatagenre;";
         updates += "DROP TEMPORARY TABLE bad_videometadatacountry;";
-        updates += "ALTER TABLE videometadatacast ADD UNIQUE INDEX (`idvideo`,`idcast`);";
-        updates += "ALTER TABLE videometadatagenre ADD UNIQUE INDEX (`idvideo`,`idgenre`);";
-        updates +="ALTER TABLE videometadatacountry ADD UNIQUE INDEX (`idvideo`,`idcountry`);";
+        updates += "ALTER TABLE videometadatacast ADD UNIQUE INDEX (\"idvideo\",\"idcast\");";
+        updates += "ALTER TABLE videometadatagenre ADD UNIQUE INDEX (\"idvideo\",\"idgenre\");";
+        updates +="ALTER TABLE videometadatacountry ADD UNIQUE INDEX (\"idvideo\",\"idcountry\");";
         if (!performActualUpdate(updates, "1033", dbver,
                                  MythVideoVersionName))
             return false;
@@ -769,8 +769,8 @@ bool doUpgradeVideoDatabaseSchema(void)
     if (dbver == "1034")
     {
         QStringList updates;
-        updates += "ALTER TABLE videometadata ADD `tagline` VARCHAR (255) "
-                   "AFTER `subtitle`;";
+        updates += "ALTER TABLE videometadata ADD \"tagline\" VARCHAR (255) "
+                   "AFTER \"subtitle\";";
 
         if (!performActualUpdate(updates, "1035", dbver,
                                  MythVideoVersionName))
@@ -790,8 +790,8 @@ bool doUpgradeVideoDatabaseSchema(void)
     if (dbver == "1036")
     {
         QStringList updates;
-        updates += "ALTER TABLE  videometadata ADD  `studio` VARCHAR( 128 ) "
-                   "AFTER `director`;";
+        updates += "ALTER TABLE  videometadata ADD  \"studio\" VARCHAR( 128 ) "
+                   "AFTER \"director\";";
         if (!performActualUpdate(updates, "1037", dbver,
                                  MythVideoVersionName))
             return false;

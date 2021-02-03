@@ -162,7 +162,7 @@ bool UpgradeArchiveDatabaseSchema(void)
     {
         const QString updates[] = 
         {
-            "ALTER TABLE `archiveitems` "
+            "ALTER TABLE \"archiveitems\" "
             "ADD duration INT UNSIGNED NOT NULL DEFAULT 0, "
             "ADD cutduration INT UNSIGNED NOT NULL DEFAULT 0, "
             "ADD videowidth INT UNSIGNED NOT NULL DEFAULT 0, "

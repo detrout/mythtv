@@ -77,7 +77,7 @@ bool DBUtil::IsNewDatabase(void)
     const int size = tables.size();
     // Usually there will be a single table called schemalock, but check for
     // no tables, also, just in case.
-    return (((size == 1) && (tables.at(0).endsWith(".`schemalock`"))) ||
+    return (((size == 1) && (tables.at(0).endsWith(".\"schemalock\""))) ||
             (size == 0));
 }
 
@@ -427,9 +427,9 @@ QStringList DBUtil::GetTables(const QStringList &engines)
     if (!query.isConnected())
         return result;
 
-    QString sql = "SELECT CONCAT('`', TABLE_SCHEMA, "
-                  "              '`.`', TABLE_NAME, "
-                  "              '`') AS `TABLE_NAME` "
+    QString sql = "SELECT CONCAT('\"', TABLE_SCHEMA, "
+                  "              '\".\"', TABLE_NAME, "
+                  "              '\"') AS \"TABLE_NAME\" "
                   "  FROM INFORMATION_SCHEMA.TABLES "
                   " WHERE TABLE_SCHEMA = DATABASE() "
                   "   AND TABLE_TYPE = 'BASE TABLE'";

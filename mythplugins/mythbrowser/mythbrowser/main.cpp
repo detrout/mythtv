@@ -78,7 +78,7 @@ static void runHomepage()
     // that is set as a homepage starts with a space.
     MSqlQuery query(MSqlQuery::InitCon());
 
-    if (!query.exec("SELECT url FROM `websites` WHERE `homepage` = true;"))
+    if (!query.exec("SELECT url FROM \"websites\" WHERE \"homepage\" = true;"))
         LOG(VB_GENERAL, LOG_ERR, "Error loading homepage from DB");
 
     if (query.size() > 0)
