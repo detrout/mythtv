@@ -1315,7 +1315,7 @@ class Song( MusicSchema, DBDataWrite ):
             db = DBCache(db)
             songs = MusicPlaylist(playlist, db)._songstring()
 
-        return cls._fromQuery("WHERE LOCATE(song_id, %s)", songs, db)
+        return cls._fromQuery("WHERE POSITION(song_id in %s)", songs, db)
 
 class Album( MusicSchema, DBDataWrite ):
     _table = 'music_albums'
@@ -1417,7 +1417,7 @@ class MusicPlaylist( MusicSchema, DBDataWrite ):
         except AttributeError:
             db = DBCache(db)
             song = Song(song, db).song_id
-        return cls._fromQuery("WHERE LOCATE(%s, playlist_songs)", song, db)
+        return cls._fromQuery("WHERE POSITION(%s in playlist_songs)", song, db)
 
 class MusicDirectory( MusicSchema, DBDataWrite ):
     _table = 'music_directories'

@@ -2282,7 +2282,7 @@ void ProgramInfo::CheckProgramIDAuthorities(void)
     while (!table.isEmpty())
     {
         query.prepare(QString(
-            "SELECT DISTINCT LEFT(programid, LOCATE('/', programid)) "
+            "SELECT DISTINCT LEFT(programid, POSITION('/' IN programid)) "
             "FROM %1 WHERE programid <> ''").arg(table));
         if (!query.exec())
             MythDB::DBError("CheckProgramIDAuthorities", query);

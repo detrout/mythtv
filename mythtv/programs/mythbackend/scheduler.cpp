@@ -4212,8 +4212,8 @@ void Scheduler::UpdateDuplicates(void)
 "      ( ") +
         (ProgramInfo::UsingProgramIDAuthority() ?
 "       (p.programid = '' OR oldrecorded.programid = '' OR "
-"         LEFT(p.programid, LOCATE('/', p.programid)) <> "
-"         LEFT(oldrecorded.programid, LOCATE('/', oldrecorded.programid))) " :
+"         LEFT(p.programid, POSITION('/' IN p.programid)) <> "
+"         LEFT(oldrecorded.programid, POSITION('/' IN oldrecorded.programid))) " :
 "       (p.programid = '' OR oldrecorded.programid = '') " )
         + QString(
 "       AND "

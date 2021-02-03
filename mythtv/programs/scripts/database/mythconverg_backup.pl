@@ -974,10 +974,10 @@ EOF
                         "ORDER BY CAST(channum AS SIGNED),".
                         "         CAST(SUBSTRING(channum".
                         "                        FROM (1 +".
-                        "                              LOCATE('_', channum) +".
-                        "                              LOCATE('-', channum) +".
-                        "                              LOCATE('#', channum) +".
-                        "                              LOCATE('.', channum)))".
+                        "                              POSITION('_' IN channum) +".
+                        "                              POSITION('-' IN channum) +".
+                        "                              POSITION('#' IN channum) +".
+                        "                              POSITION('.' IN channum)))".
                         "              AS SIGNED)";
             my $sth = $dbh->prepare($query);
             verbose($verbose_level_debug,
